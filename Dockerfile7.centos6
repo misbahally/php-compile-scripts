@@ -1,0 +1,76 @@
+FROM centos:6
+
+ARG GIT_TAG=php-7.1.26
+ARG GIT_REPO=https://github.com/php/php-src.git
+ARG INSTALL_PATH=/opt/php71m
+
+# Install build dependencies
+RUN yum install epel-release git gcc gcc-c++ libxml2-devel pkgconfig openssl-devel \
+  bzip2-devel curl-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel \
+  gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel autoconf bison \
+  re2c libicu-devel m install libwebp-devel libmcrypt-devel readline-devel libxslt-devel
+  
+RUN mkdir -v -p $INSTALL_PATH
+
+# Change to source directory
+cd $SRC_PATH
+
+# Configure, build and install
+./configure \
+	--prefix=$INSTALL_PATH \
+	--with-config-file-path=$INSTALL_PATH/etc \
+	--with-config-file-scan-dir=$INSTALL_PATH/etc/php.d \
+	--enable-fpm \
+	--with-fpm-user=www-data \
+	--with-fpm-group=www-data \
+	--disable-short-tags \
+	--enable-opcache \
+	--enable-inline-optimization \
+	--with-openssl \
+	--with-pcre-regex \
+	--with-pcre-jit \
+	--with-zlib \
+	--enable-bcmath \
+	--with-bz2 \
+	--enable-calendar \
+	--with-curl \
+	--enable-exif \
+	--with-gd \
+	--enable-mbstring \
+	--with-mysqli \
+	--with-mysql-sock \
+	--enable-pcntl \
+	--with-pdo-mysql \
+	--enable-soap \
+	--enable-sockets \
+	--with-xmlrpc \
+	--enable-zip \
+	--with-webp-dir \
+	--with-jpeg-dir \
+	--with-png-dir \
+	--enable-ftp \
+	--with-gettext \
+	--with-gmp \
+	--with-mcrypt \
+	--enable-sysvmsg \
+	--enable-sysvsem \
+	--enable-sysvshm \
+	--with-xsl \
+	--enable-wddx \
+	--with-libxml-dir \
+	--with-freetype-dir \
+	--with-iconv-dir \
+	--enable-shmop \
+	--with-readline \
+	--enable-intl \
+	--with-xpm-dir \
+	--with-mhash \
+
+if [ $? -eq 0 ]; then
+RUN make -j$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l) && make test
+
+RUN make install
+
+RUN tar -czf  $INSTALL_PATH 
+
+
