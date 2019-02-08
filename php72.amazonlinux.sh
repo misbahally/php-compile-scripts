@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=php-7.1.26
+VERSION=php-7.2.15
 GIT_REPO=https://github.com/php/php-src.git
 TAR_GZ=http://au1.php.net/distributions/${VERSION}.tar.gz
 INSTALL_PATH=/opt/${VERSION}m
