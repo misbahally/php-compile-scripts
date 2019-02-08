@@ -1,8 +1,8 @@
 #!/bin/bash
 VERSION=php-7.1.26
 GIT_REPO=https://github.com/php/php-src.git
-TAR_GZ=http://php.net/get/$VERSION.tar.gz/from/a/mirror
-INSTALL_PATH=/opt/$VERSIONm
+TAR_GZ=http://au1.php.net/distributions/${VERSION}.tar.gz
+INSTALL_PATH=/opt/${VERSION}m
 SRC_PATH=/usr/local/src
 
 # Cleanup
@@ -16,12 +16,12 @@ yum install -y git gcc gcc-c++ libxml2-devel pkgconfig openssl-devel \
 	gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel autoconf bison \
 	re2c libicu-devel m install libwebp-devel libmcrypt-devel readline-devel libxslt-devel
 mkdir -v -p $INSTALL_PATH $SRC_PATH 
-if [ ! -z $TAR_GZ ]; then
+if [ -z $TAR_GZ ]; then
 	git clone $GIT_REPO $SRC_PATH/$VERSION
 	cd $SRC_PATH/$VERSION
 	git checkout $GIT_TAG
 else
-	curl -O $TAR_GZ
+	curl $TAR_GZ > $VERSION.tar.gz
 	tar -xzvf $VERSION.tar.gz -C $SRC_PATH
 	cd $SRC_PATH/$VERSION
 fi
