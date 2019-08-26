@@ -11,10 +11,10 @@ mkdir pkg
 
 echo "#!/bin/bash
 yum install -y epel-release
-yum install -y git gcc gcc-c++ libxml2-devel pkgconfig openssl-devel \
+yum install -y git gcc gcc-c++ make libxml2-devel pkgconfig openssl-devel \
 	bzip2-devel curl-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel \
 	gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel autoconf bison \
-	re2c libicu-devel m install libwebp-devel libmcrypt-devel readline-devel libxslt-devel
+	re2c libicu-devel m install libwebp-devel readline-devel libxslt-devel
 mkdir -v -p $INSTALL_PATH $SRC_PATH 
 if [ -z $TAR_GZ ]; then
 	git clone $GIT_REPO $SRC_PATH/$VERSION
