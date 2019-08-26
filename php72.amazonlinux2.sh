@@ -1,7 +1,7 @@
 #!/bin/bash
-VERSION=php-7.1.26
+VERSION=php-7.2.21
 GIT_REPO=https://github.com/php/php-src.git
-TAR_GZ=http://au1.php.net/distributions/${VERSION}.tar.gz
+TAR_GZ=https://www.php.net/distributions/${VERSION}.tar.gz
 INSTALL_PATH=/opt/${VERSION}m
 SRC_PATH=/usr/local/src
 
@@ -10,11 +10,12 @@ rm -rf pkg
 mkdir pkg
 
 echo "#!/bin/bash
-yum install -y epel-release
+amazon-linux-extras install epel
 yum install -y git gcc gcc-c++ make libxml2-devel pkgconfig openssl-devel \
 	bzip2-devel curl-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel \
 	gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel autoconf bison \
-	re2c libicu-devel m install libwebp-devel readline-devel libxslt-devel
+	re2c libicu-devel m install libwebp-devel readline-devel libxslt-devel \
+	curl tar
 mkdir -v -p $INSTALL_PATH $SRC_PATH 
 if [ -z $TAR_GZ ]; then
 	git clone $GIT_REPO $SRC_PATH/$VERSION
@@ -60,7 +61,6 @@ fi
 	--enable-ftp \
 	--with-gettext \
 	--with-gmp \
-	--with-mcrypt \
 	--enable-sysvmsg \
 	--enable-sysvsem \
 	--enable-sysvshm \
@@ -81,4 +81,4 @@ fi
 chmod +x pkg/build.sh
 
 # Install build dependencies
-docker run --rm --name cs6-$GIT_TAG -i -v `pwd`/pkg:/pkg centos:6 /pkg/build.sh
+docker run --rm --name amazonlinux-$VERSION -i -v `pwd`/pkg:/pkg amazonlinux:2 /pkg/build.sh
