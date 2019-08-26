@@ -1,0 +1,6 @@
+*
+!/.gitignore
+!/php71.amazonlinux.sh
+!/php71.centos6.sh
+!/php72.amazonlinux.sh
+!/php72.amazonlinux2.sh
